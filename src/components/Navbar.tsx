@@ -2,17 +2,20 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Bell, User, Globe, Sun, Moon, Menu } from "lucide-react";
+import { Bell, User, Globe, Sun, Moon, Menu, LogOut } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const Navbar = () => {
   const { theme, toggleTheme, language, setLanguage } = useTheme();
+  const { user, isAuthenticated, logout } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [notificationCount] = useState(3);
 
@@ -32,22 +35,28 @@ export const Navbar = () => {
       contact: "Contato",
       login: "Entrar",
       register: "Cadastrar",
+      dashboard: "Dashboard",
+      logout: "Sair",
     },
     en: {
       home: "Home",
-      services: "Services", 
+      services: "Services",
       about: "About",
       contact: "Contact",
       login: "Login",
       register: "Register",
+      dashboard: "Dashboard",
+      logout: "Logout",
     },
     es: {
       home: "Inicio",
       services: "Servicios",
       about: "Acerca",
-      contact: "Contacto", 
+      contact: "Contacto",
       login: "Iniciar",
       register: "Registro",
+      dashboard: "Dashboard",
+      logout: "Cerrar sesión",
     },
   };
 
@@ -64,20 +73,20 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center space-x-2 hover:opacity-80 smooth-transition">
             <div className="w-8 h-8 hero-gradient rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">CIE</span>
             </div>
             <span className="text-xl font-bold text-foreground">
               StudentID
             </span>
-          </div>
+          </Link>
 
           {/* Navigation Links - Hidden on mobile */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#home" className="text-foreground hover:text-primary smooth-transition">
+            <Link to="/" className="text-foreground hover:text-primary smooth-transition">
               {t.home}
-            </a>
+            </Link>
             <a href="#services" className="text-foreground hover:text-primary smooth-transition">
               {t.services}
             </a>
@@ -87,6 +96,11 @@ export const Navbar = () => {
             <a href="#contact" className="text-foreground hover:text-primary smooth-transition">
               {t.contact}
             </a>
+            {isAuthenticated && (
+              <Link to="/dashboard" className="text-foreground hover:text-primary smooth-transition">
+                {t.dashboard}
+              </Link>
+            )}
           </div>
 
           {/* Right Side Controls */}
@@ -146,18 +160,35 @@ export const Navbar = () => {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="sm">
                   <User className="h-4 w-4" />
+                  {isAuthenticated && user && (
+                    <span className="ml-2 hidden sm:inline text-sm">
+                      {user.name.split(' ')[0]}
+                    </span>
+                  )}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem asChild>
-                  <Link to="/signin">{t.login}</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/signup">{t.register}</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/dashboard">Dashboard</Link>
-                </DropdownMenuItem>
+                {isAuthenticated ? (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <Link to="/dashboard">{t.dashboard}</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={logout} className="text-destructive">
+                      <LogOut className="h-4 w-4 mr-2" />
+                      {t.logout}
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <Link to="/signin">{t.login}</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/signup">{t.register}</Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
 

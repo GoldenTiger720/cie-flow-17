@@ -2,16 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
 
-// Import hero images
-import heroStudents from "@/assets/hero-students-digital.jpg";
-import heroIdCard from "@/assets/hero-id-card.jpg";
-import heroCampus from "@/assets/hero-campus.jpg";
-import heroSecurity from "@/assets/hero-security.jpg";
 import { useTheme } from "@/contexts/ThemeContext";
 
 const slides = [
   {
-    image: heroStudents,
+    image: "/images/hero-students-digital.jpg",
     title: {
       pt: "Carteira de Identificação Estudantil Digital",
       en: "Digital Student Identification Card", 
@@ -24,7 +19,7 @@ const slides = [
     }
   },
   {
-    image: heroIdCard,
+    image: "/images/hero-id-card.jpg",
     title: {
       pt: "Tecnologia Avançada de Segurança",
       en: "Advanced Security Technology",
@@ -37,7 +32,7 @@ const slides = [
     }
   },
   {
-    image: heroCampus,
+    image: "/images/hero-campus.jpg",
     title: {
       pt: "Solução Completa para Universidades",
       en: "Complete Solution for Universities",
@@ -50,7 +45,7 @@ const slides = [
     }
   },
   {
-    image: heroSecurity,
+    image: "/images/hero-security.jpg",
     title: {
       pt: "Conformidade Legal Garantida",
       en: "Guaranteed Legal Compliance",
