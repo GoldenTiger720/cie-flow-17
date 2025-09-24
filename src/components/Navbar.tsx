@@ -155,6 +155,9 @@ export const Navbar = () => {
                 <DropdownMenuItem asChild>
                   <Link to="/signup">{t.register}</Link>
                 </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/dashboard">Dashboard</Link>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
